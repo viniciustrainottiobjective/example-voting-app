@@ -46,10 +46,12 @@ class Worker {
   }
 
   static Jedis connectToRedis(String host) {
+    String password = System.getenv("REDIS_PASSWORD");
     Jedis conn = new Jedis(host);
 
     while (true) {
       try {
+        conn.auth(password);
         conn.keys("*");
         break;
       } catch (JedisConnectionException e) {
